@@ -25,6 +25,14 @@ block content
         //- pre {{ vm.USER | json }}
         //- pre {{ vm.entries | json }}
 
+        label Start
+          input(type="date", ng-model="vm.start_date")
+        label End
+          input(type="date", ng-model="vm.end_date")
+
+        button(ng-click="vm.reload()") Reload
+
+
         table.table.table-striped.table-hover
           thead
             tr
@@ -33,8 +41,10 @@ block content
               th Client
               th Tags
               th billable
+              th Day
+              th Date
               th Start
-              th Stop
+              th End
               th Duration
               //- th Only Duration?
 
@@ -47,7 +57,7 @@ block content
 
           tbody
 
-            tr(ng-repeat="entry in vm.entries")
+            tr(ng-repeat="entry in vm.entries | orderBy:'-start'")
 
               //- td
               //-   .label.label-success {{entry.id}}
@@ -61,7 +71,10 @@ block content
                 //- .label.label-success {{entry.guid}}
                 //- .label.label-success {{entry.uid}}
               td {{entry.billable}}
-              td {{entry.start | date:'short'}}
-              td {{entry.stop | date:'short'}}
-              td {{entry.duration}}s
+              td
+                .label.label-default {{entry.start | date:'EEEE'}}
+              td {{entry.start | date:'MMM d, y'}}
+              td {{entry.start | date:'mediumTime'}}
+              td {{entry.stop | date:'mediumTime'}}
+              td {{entry.duration / 60 / 60}}h
               //- td {{entry.duronly}}

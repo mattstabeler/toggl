@@ -60,6 +60,11 @@
 
 
         vm.projectName = projectName;
+        // vm.clientName = clientName;
+        vm.reload = reload;
+
+        vm.start_date; // = moment('2017-09-15T08:00:00+00:00').toDate();
+        vm.end_date; // = moment('2017-11-30T18:00:00+00:00').toDate();
 
         activate();
         vm.USER = USER;
@@ -69,17 +74,32 @@
           if(!(wid && id)){
             return 'None';
           }
-          return vm.USER.data.workspaces[wid].projects.find(function(project) { return project.id == id}).name;
-        }
-        function clientName(wid, id) {
-          if(!(wid && id)){
-            return 'None';
+
+          if('undefined' === typeof(vm.USER.data)){
+            return;
           }
-          return vm.USER.data.workspaces[wid].projects.find(function(project) { return project.id == id}).name;
+          if('undefined' === typeof(vm.USER.data.workspaces)){
+            return;
+          }
+
+          var project =  vm.USER.data.workspaces[wid].projects.find(function(project) { return project.id == id})
+          return (project) ? project.name : null;
         }
+        // function clientName(wid, id) {
+        //   if(!(wid && id)){
+        //     return 'None';
+        //   }
+        //   return vm.USER.data.workspaces[wid].projects.find(function(project) { return project.id == id}).name;
+        // }
 
         function activate() {
-          vm.entries = toggl.query({endpoint: 'time_entries', start_date: '2017-09-15T08:00:00+00:00', end_date: '2017-11-30T18:00:00+00:00'})
+          vm.start_date = moment().startOf('week').toDate();
+          vm.end_date = moment().endOf('day').toDate();
+          reload();
+        }
+
+        function reload() {
+          vm.entries = toggl.query({endpoint: 'time_entries', start_date: vm.start_date, end_date: vm.end_date })
         }
     }
 })();

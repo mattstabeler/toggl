@@ -9,8 +9,15 @@ html
       block content
 
 
+    .container
+      block footer
+        .row
+          .col-md-12
+            a(href=`https://github.com/toggl/toggl_api_docs/blob/master/toggl_api.md`, target=`_new`, title=`Toggle API Documentation`) Toggl API
 
     block footerincludes
+      script(src=`/node_modules/moment/min/moment.min.js`)
+      //- script(src=`/node_modules/moment-timezone/buids/moment-timezone.min.js`)
       script(src=`/node_modules/angular/angular.min.js`)
       script(src=`/node_modules/angular-resource/angular-resource.min.js`)
       script.
