@@ -60,8 +60,9 @@
 
 
         vm.projectName = projectName;
-        // vm.clientName = clientName;
+        vm.clientName = clientName;
         vm.reload = reload;
+        vm.isWeekday = isWeekday;
 
         vm.start_date; // = moment('2017-09-15T08:00:00+00:00').toDate();
         vm.end_date; // = moment('2017-11-30T18:00:00+00:00').toDate();
@@ -70,8 +71,13 @@
         vm.USER = USER;
         ////////////////
 
-        function projectName(wid, id) {
-          if(!(wid && id)){
+        function projectName(wid, pid) {
+          var proj = project(wid, pid)
+          return (proj) ? proj.name : null;
+        }
+
+        function project(wid, pid) {
+          if(!(wid && pid)){
             return 'None';
           }
 
@@ -82,15 +88,33 @@
             return;
           }
 
-          var project =  vm.USER.data.workspaces[wid].projects.find(function(project) { return project.id == id})
-          return (project) ? project.name : null;
+          var project =  vm.USER.data.workspaces[wid].projects.find(function(project) { return project.id == pid})
+          return project;
         }
-        // function clientName(wid, id) {
-        //   if(!(wid && id)){
-        //     return 'None';
-        //   }
-        //   return vm.USER.data.workspaces[wid].projects.find(function(project) { return project.id == id}).name;
-        // }
+
+
+
+        function client(wid, cid) {
+          return vm.USER.data.workspaces[wid].clients.find(function(client) { return client.id == cid})
+        }
+
+
+        function clientName(wid, pid) {
+
+          var proj = project(wid, pid);
+
+
+          if(!proj) {
+            return;
+          }
+
+          var cli = client(wid, proj.cid)
+
+          if(!cli) {
+            return;
+          }
+          return cli.name;
+        }
 
         function activate() {
           vm.start_date = moment().startOf('week').toDate();
@@ -100,6 +124,12 @@
 
         function reload() {
           vm.entries = toggl.query({endpoint: 'time_entries', start_date: vm.start_date, end_date: vm.end_date })
+        }
+
+        function isWeekday(date) {
+          var day = moment(date).toDate().getDay();
+          var weekend = [0, 6];
+          return (weekend.indexOf(day) == -1);
         }
     }
 })();

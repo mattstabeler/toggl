@@ -64,6 +64,7 @@ block content
               td
                 .label.label-success {{vm.projectName(entry.wid, entry.pid) || 'None'}}
               td
+                .label.label-warning {{vm.clientName(entry.wid, entry.pid) || 'None'}}
               td
                 div(ng-repeat="tag in entry.tags").label.label-info {{ tag }}
                 //- .label.label-success {{entry.pid}}
@@ -72,7 +73,7 @@ block content
                 //- .label.label-success {{entry.uid}}
               td {{entry.billable}}
               td
-                .label.label-default {{entry.start | date:'EEEE'}}
+                div(ng-class="{ 'label-default' : vm.isWeekday(entry.start), 'label-warning' : !vm.isWeekday(entry.start) }").label {{entry.start | date:'EEEE'}}
               td {{entry.start | date:'MMM d, y'}}
               td {{entry.start | date:'mediumTime'}}
               td {{entry.stop | date:'mediumTime'}}
