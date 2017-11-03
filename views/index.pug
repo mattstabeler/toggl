@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  div(ng-controller="TimesController as vm")
+    .row
+      .col-md-12
+        h1 Toggl but better
+
+        //- pre {{ vm.entries | json }}
+
+
+        //-         "id": 723079885,
+        //-   "guid": "b19fd56d36c5412d491baafe943d6df2",
+        //-   "wid": 1538855,
+        //-   "pid": 79487601,
+        //-   "billable": true,
+        //-   "start": "2017-10-25T08:00:00+00:00",
+        //-   "stop": "2017-10-25T15:30:00+00:00",
+        //-   "duration": 27000,
+        //-   "duronly": false,
+        //-   "at": "2017-11-03T15:12:45+00:00",
+        //-   "uid": 3713163
+        //- },
+
+        //- pre {{ vm.USER | json }}
+        //- pre {{ vm.entries | json }}
+
+        table.table.table-striped.table-hover
+          thead
+            tr
+              //- th ids
+              th Project
+              th Client
+              th Tags
+              th billable
+              th Start
+              th Stop
+              th Duration
+              //- th Only Duration?
+
+          //- thead
+          //-   tr
+          //-     th
+          //-       input(type="date")
+          //-       input(type="time")
+
+
+          tbody
+
+            tr(ng-repeat="entry in vm.entries")
+
+              //- td
+              //-   .label.label-success {{entry.id}}
+              td
+                .label.label-success {{vm.projectName(entry.wid, entry.pid) || 'None'}}
+              td
+              td
+                div(ng-repeat="tag in entry.tags").label.label-info {{ tag }}
+                //- .label.label-success {{entry.pid}}
+                //- .label.label-success {{entry.wid}}
+                //- .label.label-success {{entry.guid}}
+                //- .label.label-success {{entry.uid}}
+              td {{entry.billable}}
+              td {{entry.start | date:'short'}}
+              td {{entry.stop | date:'short'}}
+              td {{entry.duration}}s
+              //- td {{entry.duronly}}

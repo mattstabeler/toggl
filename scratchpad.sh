@@ -1,0 +1,1 @@
+curl -v -G -u 58860d3c9d2de8c64d01ea023889104f:api_token -X GET "https://www.toggl.com/api/v8/time_entries" --data-urlencode "start_date=2017-10-21T08:00:00+00:00" --data-urlencode "end_date=2017-10-30T18:00:00+00:00"

@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    div(ng-app="toggl").container
+
+      block content
+
+
+
+    block footerincludes
+      script(src=`/node_modules/angular/angular.min.js`)
+      script(src=`/node_modules/angular-resource/angular-resource.min.js`)
+      script.
+
+            angular
+                .module('config', [])
+                .constant('API_KEY', '#{process.env.API_KEY}')
+                .constant('API_PASS', '#{process.env.API_PASS}')
+                .constant('API_URL', '#{process.env.API_URL}')
+
+      script(src=`/javascripts/toggl.js`)
+
