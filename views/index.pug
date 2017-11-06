@@ -71,7 +71,8 @@ block content
                 //- .label.label-success {{entry.wid}}
                 //- .label.label-success {{entry.guid}}
                 //- .label.label-success {{entry.uid}}
-              td {{entry.billable}}
+              td
+                label {{ entry.billable }} #[input(type=`checkbox` ng-model="entry.billable", ng-change="vm.updateBillable(entry)")]
               td
                 div(ng-class="{ 'label-default' : vm.isWeekday(entry.start), 'label-warning' : !vm.isWeekday(entry.start) }").label {{entry.start | date:'EEEE'}}
               td {{entry.start | date:'MMM d, y'}}

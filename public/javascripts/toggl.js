@@ -40,7 +40,16 @@
     /* @ngInject */
     function toggl($resource, $http, API_URL, API_KEY, API_PASS) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + window.btoa(API_KEY + ':' + API_PASS);
-      return $resource(API_URL + '/api/v8/:endpoint/:id/:action');
+
+      var actions = {
+        updateEntry: {
+          params: {
+          },
+          method: 'put',
+          isArray: false
+        }
+      }
+      return $resource(API_URL + '/api/v8/:endpoint/:id/:action', {}, actions);
     }
 })();
 
@@ -63,6 +72,7 @@
         vm.clientName = clientName;
         vm.reload = reload;
         vm.isWeekday = isWeekday;
+        vm.updateBillable = updateBillable;
 
         vm.start_date; // = moment('2017-09-15T08:00:00+00:00').toDate();
         vm.end_date; // = moment('2017-11-30T18:00:00+00:00').toDate();
@@ -117,7 +127,7 @@
         }
 
         function activate() {
-          vm.start_date = moment().startOf('week').toDate();
+          vm.start_date = moment().startOf('month').toDate();
           vm.end_date = moment().endOf('day').toDate();
           reload();
         }
@@ -130,6 +140,14 @@
           var day = moment(date).toDate().getDay();
           var weekend = [0, 6];
           return (weekend.indexOf(day) == -1);
+        }
+
+        function updateBillable(entry) {
+          saveEntry(entry);
+        }
+
+        function saveEntry(entry) {
+          toggl.updateEntry({id: entry.id, endpoint: 'time_entries'}, { time_entry: entry });
         }
     }
 })();
